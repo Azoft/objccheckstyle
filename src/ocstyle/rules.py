@@ -250,7 +250,7 @@ def baseClasses(value):
   return justErrors(value)
 
 
-@rule(sp(1) + '(' + -(identifier[1]) + ')')
+@rule('(' + -anyIdentifier + ')')
 def category(value):
     return justErrors(value)
 
