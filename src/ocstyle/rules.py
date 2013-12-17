@@ -352,6 +352,25 @@ def ivarSection(value):
   return justErrors(value)
 
 
+@rule(identifier[1])
+def syntesizePropertyName(value, position):
+  if value[0].startswith("_"):
+    return Error('BadSyntesizePropertyName', 'Property names must not be underscored', position, LINES)
+  return None
+
+
+@rule(identifier[1])
+def innerPropertyVariable(value, position):
+  if not value[0].startswith("_"):
+    return Error('BadInnerPropertyVariable', 'Inner property names must be underscored', position, LINES)
+  return None
+
+
+@rule('@' + First('synthesize', 'dynamic') + sp(1) + syntesizePropertyName + sp(1) + '=' + sp(1) + innerPropertyVariable + ';')
+def propertyImplementation(value):
+    return justErrors(value)
+
+
 @rule('{' + +(ivar | ivarSection | anyPreprocessor | (xsp + '\n')) + '}')
 def ivarBlock(value):
   """Block full of ivar declarations."""
@@ -605,8 +624,11 @@ def forwardDeclaration(value):
   return justErrors(value)
 
 
-filePart.set(inclusion | interface | implementation | cppClass | namespace | '\n' | ' ' | method | methodDeclaration |
-             protocolDeclaration | forwardDeclaration | string | objcString | codeBlock | anyPreprocessor | AnyChar())
+filePart.set(inclusion | interface | implementation | cppClass | namespace | '\n' | ' ' | method |
+             propertyImplementation |
+             methodDeclaration |
+             protocolDeclaration | forwardDeclaration | string | objcString | codeBlock |
+             anyPreprocessor | AnyChar())
 
 
 @rule(+filePart)
