@@ -612,7 +612,7 @@ def shouldBeSemicolonAndNewline(result, pos):
   return errors or None
 
 
-@rule(methodSignature + sp(1) + codeBlock)
+@rule(methodSignature + nlOrSp + +codeBlock)
 def method(value):
   """A method."""
   return stringsAndErrors(value)
