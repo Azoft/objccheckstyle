@@ -585,7 +585,7 @@ statement.set(Translate(
 codeBlockBody = +( # Breaking naming scheme to match functions. # pylint: disable=C0103
     anyPreprocessor | statement | codeBlock)
 
-codeBlock.set(Translate('{' + +codeBlockBody + '}', stringsAndErrors))
+codeBlock.set(Translate('{' + '\n' + +codeBlockBody + '}', stringsAndErrors))
 
 
 @rule(Regex('[ \t]*') + -keep('\n'))
@@ -612,7 +612,7 @@ def shouldBeSemicolonAndNewline(result, pos):
   return errors or None
 
 
-@rule(methodSignature + shouldBeSemicolonAndNewline + codeBlock)
+@rule(methodSignature + sp(1) + codeBlock)
 def method(value):
   """A method."""
   return stringsAndErrors(value)
