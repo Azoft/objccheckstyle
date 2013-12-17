@@ -250,6 +250,11 @@ def baseClasses(value):
   return justErrors(value)
 
 
+@rule(sp(1) + '(' + -(identifier[1]) + ')')
+def category(value):
+    return justErrors(value)
+
+
 filePart = Forward() # Breaking naming scheme to match functions. # pylint: disable=C0103
 
 
@@ -443,6 +448,7 @@ def declarations(value): # 2 lines check is broken due to decorator wrapping. # 
 
 @rule(expectedDoc('ExpectedInterfaceDocInHeader', 'Interface requires /** documentation */') +
       '@interface' + sp(1) + className + -baseClasses +
+      -(nlOrSp + category) +
       -(nlOrSp + implementedProtocols) +
       -(nlOrSp + ivarBlock) +
       declarations +
