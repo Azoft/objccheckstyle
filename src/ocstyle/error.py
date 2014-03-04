@@ -38,7 +38,7 @@ class Error(object):
 
   def __str__(self):
     line, offset = self.lineAndOffset()
-    return '%d: note : OCStyle: %s at position %d - %s' % (line, self.kind, offset, self.message)
+    return ':%d:%d: warning: OCStyle: %s - %s' % (line, offset, self.kind, self.message)
 
 
   def __repr__(self):
