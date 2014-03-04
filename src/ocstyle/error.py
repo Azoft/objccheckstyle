@@ -43,4 +43,4 @@ class Error(object):
 
 
   def __repr__(self):
-    return 'Error<%s>' % self
+    return 'warning: <%s>' % self
