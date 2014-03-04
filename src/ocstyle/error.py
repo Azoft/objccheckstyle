@@ -36,10 +36,9 @@ class Error(object):
     line = bisect.bisect_left(self.lines, self.position)
     return line, self.position - self.lines[line - 1]
 
-
   def __str__(self):
     line, offset = self.lineAndOffset()
-    return '%d:%d: warn : OCStyle: %s - %s' % (line, offset, self.kind, self.message)
+    return '%d: note : OCStyle: %s at position %d - %s' % (line, self.kind, offset, self.message)
 
 
   def __repr__(self):
