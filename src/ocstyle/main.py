@@ -42,7 +42,8 @@ def checkFile(path, f, maxLineLength):
   return result
 
 def parseFilename(filename, maxLineLength) :
-  for part in check(filename, maxLineLength):
+  if filename.endswith(('.m','.mm','.h')):
+    for part in check(filename, maxLineLength):
         if isinstance(part,rules.Error):
           print os.path.abspath(filename) + ':%s' % part
         else:
