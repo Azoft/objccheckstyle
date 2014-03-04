@@ -1,0 +1,11 @@
+setup.py
+src/ocstyle/__init__.py
+src/ocstyle/error.py
+src/ocstyle/handlers.py
+src/ocstyle/main.py
+src/ocstyle/main_test.py
+src/ocstyle/rules.py
+src/ocstyle/rules_test.py
+src/ocstyle/testdata/.lintignore
+src/ocstyle/testdata/Parsing.h
+src/ocstyle/testdata/Parsing.m

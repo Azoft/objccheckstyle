@@ -103,13 +103,13 @@ CCBlockProperty(BlockURLHandler, withCheckBlock, (URLHandlingBlock));
 /**
  * This list of protocols is ok.
  */
-@interface UIState : NSObject
-<ProtocolA,
-ProtocolB>
+@interface UIState : NSObject <ProtocolA, ProtocolB>
 {
     void (^_tryAgain)(void);
     NSString *(^_getAString)(void);
 }
+
+- (void)requestActionSubmitsWithCompletion:(void (^)(NSArray *result, NSError *error))completion;
 
 @end
 

@@ -57,17 +57,16 @@ def proceedFolder(root, excludedFolders, maxLineLength):
     foldersToExclude = [[None]]
   else :
     foldersToExclude = excludedFolders
-  for root, subFolders, files in os.walk(root):
-    for folder in subFolders:
-      if not folder in foldersToExclude[0]:
-        print folder
-        proceedFolder(folder, foldersToExclude, maxLineLength)
-      else:
-        continue
 
-    for filename in files:
-      filePath = os.path.join(root, filename)
+  filesAndDirs = [f for f in os.listdir(root)]
+  for f in filesAndDirs:
+    filePath = os.path.join(root, f)
+    if os.path.isfile(filePath):
       parseFilename(filePath, maxLineLength)
+    else:
+      if not f in foldersToExclude[0]:
+        proceedFolder(filePath, foldersToExclude, maxLineLength)
+
 
 def main():
   """Main body of the script."""

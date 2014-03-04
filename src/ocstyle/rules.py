@@ -347,7 +347,7 @@ def namedVariable(nameType):
   """Creates a pattern for a named simple or block variable."""
   return (
     (objcType + xsp + nameType + -arrayCardinality) |
-    blockVariable(nameType)
+    (blockVariable(nameType))
   )
 
 
@@ -429,7 +429,7 @@ def propertyName(value, position):
   return None
 
 
-@rule(Regex(r'readonly|atomic|nonatomic|copy|assign|retain|strong|weak')[drop] |
+@rule(Regex(r'readwrite|readonly|atomic|nonatomic|copy|assign|retain|strong|weak')[drop] |
       (Regex(r'[gs]etter')[drop] + sp(1) + '=' + sp(1) + selectorPartName))
 def propertyOption(value): # 2 lines check is broken due to decorator wrapping. # pylint: disable=W9911
   """Option for a property."""

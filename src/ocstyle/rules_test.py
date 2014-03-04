@@ -85,6 +85,7 @@ void (^onSuccessfullLogin)(int a, int b) = ^(int a, int b){
 
   def testPropertyDeclaration(self):
     """Test for property declarations."""
+    self.assertMatches(rules.propertyDeclaration, '@property (nonatomic, strong, readwrite) NSURL *localSubmitURL;')
     self.assertMatches(rules.propertyDeclaration, '@property BOOL shouldForceFrame;')
     self.assertMatches(rules.propertyDeclaration, '@property (readonly) SCNavigationBar * fakeBackground;')
     self.assertMatches(rules.propertyDeclaration, '@property(nonatomic, getter=isEnabled) BOOL enabled;')
@@ -128,6 +129,8 @@ void (^onSuccessfullLogin)(int a, int b) = ^(int a, int b){
     return FORMAT(@"%@://%@", [self serverProtocol], [self serverHostWithSubdomain:subdomain]);
 }
     '''.strip())
+    self.assertMatches(rules.methodDeclaration, '''
+- (void)requestActionSubmitsWithCompletion:(void (^)(NSArray *result, NSError *error))completion;''')
 
 
   def testMacroCall(self):
