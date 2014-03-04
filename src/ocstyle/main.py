@@ -41,6 +41,12 @@ def checkFile(path, f, maxLineLength):
   result.sort(key=lambda err: err.position if isinstance(err, rules.Error) else 0)
   return result
 
+def parseFilename(filename, maxLineLength) :
+  for part in check(filename, maxLineLength):
+        if isinstance(part,rules.Error):
+          print os.path.abspath(filename) + ':%s' % part
+        else:
+          print 'unparsed: %r' % part
 
 def main():
   """Main body of the script."""
@@ -51,11 +57,14 @@ def main():
 
   for filename in filenames:
     if not os.path.isdir(filename):
-      for part in check(filename, args.maxLineLength):
-        if isinstance(part,rules.Error):
-          print os.path.abspath(filename) + ':%s' % part
-        else:
-          print 'unparsed: %r' % part
+      parseFilename(filename, args.maxLineLength)
+    else :
+      fileList = []
+      rootdir = filename
+      for root, subFolders, files in os.walk(rootdir):
+        for file in files:
+          parseFilename(os.path.join(root,file), args.maxLineLength)
+
     print
 
 
