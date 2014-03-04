@@ -493,7 +493,10 @@ def protocolDeclaration(value): # 2 lines check is broken due to decorator wrapp
   return stringsAndErrors(value)
 
 
-@rule('@implementation' + sp(1) + className + -(sp(1) + ivarBlock) + (filePart - end)[...] + end)
+@rule('@implementation' + sp(1) + className +
+      -(sp(1) + ivarBlock) +
+      (filePart - end)[...] +
+      end)
 def implementation(value):
   """Implementation section."""
   return stringsAndErrors(value)

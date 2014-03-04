@@ -18,6 +18,8 @@
 import argparse
 import os.path
 import sys
+import csv
+import StringIO
 
 import parcon
 
@@ -49,22 +51,52 @@ def parseFilename(filename, maxLineLength) :
         else:
           print 'unparsed: %r\n' % part
 
+def proceedFolder(root, excludedFolders, maxLineLength):
+  foldersToExclude = None
+  if not excludedFolders:
+    foldersToExclude = [[None]]
+  else :
+    foldersToExclude = excludedFolders
+  for root, subFolders, files in os.walk(root):
+    for folder in subFolders:
+      if not folder in foldersToExclude[0]:
+        print folder
+        proceedFolder(folder, foldersToExclude, maxLineLength)
+      else:
+        continue
+
+    for filename in files:
+      filePath = os.path.join(root, filename)
+      parseFilename(filePath, maxLineLength)
+
 def main():
   """Main body of the script."""
 
   parser = argparse.ArgumentParser()
   parser.add_argument("--maxLineLength", action="store", type=int, default=120, help="Maximum line length")
+  parser.add_argument("--excludedDirs", action="store", type=str)
   args, filenames = parser.parse_known_args()
 
   for filename in filenames:
     if not os.path.isdir(filename):
       parseFilename(filename, args.maxLineLength)
     else :
-      fileList = []
+      f = StringIO.StringIO(args.excludedDirs)
+      excludedDirs = csv.reader(f)
+      excludedDirs = list(excludedDirs)
       rootdir = filename
-      for root, subFolders, files in os.walk(rootdir):
-        for file in files:
-          parseFilename(os.path.join(root,file), args.maxLineLength)
+      proceedFolder(rootdir, excludedDirs, args.maxLineLength)
+
+
+
+            # filePath = os.path.join(root, filename)
+            #
+
+      # for root, subFolders, files in os.walk(rootdir):
+      #   for file in files:
+      #     print os.path.realpath(file)
+      #     if os.path.dirname(file) in excludedDirs:
+
 
     print
 
