@@ -45,9 +45,9 @@ def parseFilename(filename, maxLineLength) :
   if filename.endswith(('.m','.mm','.h')):
     for part in check(filename, maxLineLength):
         if isinstance(part,rules.Error):
-          sys.stderr.write(os.path.abspath(filename) + ': %s' % part)
+          sys.stderr.write(os.path.abspath(filename) + ': %s\n' % part)
         else:
-          print 'unparsed: %r' % part
+          print 'unparsed: %r\n' % part
 
 def main():
   """Main body of the script."""
