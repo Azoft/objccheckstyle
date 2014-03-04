@@ -53,7 +53,7 @@ def main():
     if not os.path.isdir(filename):
       for part in check(filename, args.maxLineLength):
         if isinstance(part,rules.Error):
-          print os.path.abspath(filename) + ' %s' % part
+          print os.path.abspath(filename) + ':%s' % part
         else:
           print 'unparsed: %r' % part
     print
