@@ -134,7 +134,7 @@ def sp(expectedCount):
 
 
 xsp = unexpected('ExtraSpace', Regex(r'[ \t]+')) # Breaking naming scheme to match functions. # pylint: disable=C0103
-
+xsc = unexpected('ExtraSemicolon', Regex(r'[ \t]+;[ \t]+'))
 nlOrSp = '\n' | sp(1) # Breaking naming scheme to match functions. # pylint: disable=C0103
 
 
@@ -202,6 +202,16 @@ def identifier(value):
   """An identifier."""
   return value
 
+@rule(identifier[1])
+def anyIdentifier(_):
+  """Matches any identifier."""
+  return None
+
+@rule(anyIdentifier + -('.' + anyIdentifier)[...])
+def compositeIdentifier(value):
+  """An identifier."""
+  return value
+
 
 @rule(identifier[1])
 def className(value, position):
@@ -238,12 +248,6 @@ def parameterName(value, position):
   return None
 
 
-@rule(identifier[1])
-def anyIdentifier(_):
-  """Matches any identifier."""
-  return None
-
-
 @rule(sp(1) + ':' + sp(1) + className + (',' + sp(1) + className)[...])
 def baseClasses(value):
   """List of base classes."""
@@ -253,7 +257,6 @@ def baseClasses(value):
 @rule('(' + -anyIdentifier + ')')
 def category(value):
     return justErrors(value)
-
 
 filePart = Forward() # Breaking naming scheme to match functions. # pylint: disable=C0103
 
@@ -276,6 +279,7 @@ def sizedCType(value, position):
   for m in re.compile(r'\s\s+').finditer(value):
     return Error('ExtraSpace', 'Extra space in type name', position + m.start(), LINES)
   return None
+
 
 
 @rule(First('volatile', 'static', 'const') + ' ' + xsp)
@@ -312,13 +316,13 @@ def singleBlockParam(value):
   return justErrors(value)
 
 
-@rule('(' + -(singleBlockParam + xsp + (',' + sp(1) + singleBlockParam)[...]) + ')')
+@rule('(' + xsp + -(singleBlockParam + xsp + (',' + sp(1) + singleBlockParam)[...]) + ')')
 def blockParams(value):
   """Parameters to a block declaration."""
   return justErrors(value)
 
 
-@rule('(^)' + xsp + blockParams)
+@rule('(^' + -(xsp + -anyIdentifier + xsp) + ')' + xsp + blockParams)
 def blockSuffix(value):
   """A suffix that, when appended to a type, makes it a block type."""
   return justErrors(value)
@@ -332,12 +336,19 @@ def arrayCardinality(_):
   """Matches an array cardinality specification like [4]"""
   return None
 
+def blockVariable(nameType):
+  """Creates a pattern for a named block variable."""
+  return (
+      (compositeIdentifier + -(sp(1) + '(^' + -(xsp + nameType + xsp) + ')' + xsp + (blockParams))) |
+      (objcType + '(^' + xsp + nameType + xsp + ')' + xsp + blockParams)
+  )
 
 def namedVariable(nameType):
   """Creates a pattern for a named simple or block variable."""
   return (
     (objcType + xsp + nameType + -arrayCardinality) |
-    (objcType + '(^' + xsp + nameType + xsp + ')' + xsp + blockParams))
+    blockVariable(nameType)
+  )
 
 
 @rule(sp(4) + namedVariable(ivarName) + xsp + ';')
@@ -350,7 +361,6 @@ def ivar(value):
 def ivarSection(value):
   """Section within an ivar block in an interface."""
   return justErrors(value)
-
 
 @rule(identifier[1])
 def syntesizePropertyName(value, position):
@@ -369,7 +379,6 @@ def innerPropertyVariable(value, position):
 @rule('@' + First('synthesize', 'dynamic') + sp(1) + syntesizePropertyName + sp(1) + '=' + sp(1) + innerPropertyVariable + ';')
 def propertyImplementation(value):
     return justErrors(value)
-
 
 @rule('{' + +(ivar | ivarSection | anyPreprocessor | (xsp + '\n')) + '}')
 def ivarBlock(value):
@@ -411,7 +420,6 @@ def methodSignature(value):
 def methodDeclaration(value):
   """A method declaration."""
   return justErrors(value)
-
 
 @rule(identifier[1])
 def propertyName(value, position):
@@ -476,7 +484,6 @@ def interface(value): # 2 lines check is broken due to decorator wrapping. # pyl
   """Interface declaration."""
   return stringsAndErrors(value)
 
-
 @rule(expectedDoc('ExpectedProtocolDocInHeader', 'Protocol requires /** documentation */') +
       '@protocol' + sp(1) + className + -baseClasses + -(sp(1) + implementedProtocols) + xsp + '\n' +
       declarations +
@@ -536,9 +543,13 @@ def expressionPart(value):
 
 expression.set(Translate(+expressionPart, stringsAndErrors))
 
-
 @rule(objcType + xsp + localVarName + -(sp(1) + '=' + nlOrSp + expression) + ';')
 def localVar(value):
+  """Just the errors."""
+  return justErrors(value)
+
+@rule(blockVariable(anyIdentifier) + -(sp(1) + '=' + sp(1) + '^' + xsp + -blockParams + codeBlock) + ';')
+def blockLocalVar(value):
   """Just the errors."""
   return justErrors(value)
 
@@ -577,7 +588,7 @@ def whileStmt(value):
 
 
 statement.set(Translate(
-    (Regex('\s+')[drop] | ifStmt | forStmt | whileStmt | (keyword + unparsedStmt) | localVar | unparsedStmt)
+    (Regex('\s+')[drop] | ifStmt | forStmt | whileStmt | (keyword + unparsedStmt) | localVar | blockLocalVar | unparsedStmt)
      + Literal(';')[...],
     justErrors))
 
@@ -585,7 +596,7 @@ statement.set(Translate(
 codeBlockBody = +( # Breaking naming scheme to match functions. # pylint: disable=C0103
     anyPreprocessor | statement | codeBlock)
 
-codeBlock.set(Translate('{' + '\n' + +codeBlockBody + '}', stringsAndErrors))
+codeBlock.set(Translate('{' + +codeBlockBody + '}', stringsAndErrors))
 
 
 @rule(Regex('[ \t]*') + -keep('\n'))
@@ -612,8 +623,8 @@ def shouldBeSemicolonAndNewline(result, pos):
   return errors or None
 
 
-@rule(methodSignature + nlOrSp + +codeBlock)
-def method(value):
+@rule(methodSignature + xsc + nlOrSp + codeBlock)
+def methodImplementation(value):
   """A method."""
   return stringsAndErrors(value)
 
@@ -624,9 +635,10 @@ def forwardDeclaration(value):
   return justErrors(value)
 
 
-filePart.set(inclusion | interface | implementation | cppClass | namespace | '\n' | ' ' | method |
+filePart.set(inclusion | interface | implementation | cppClass | namespace | '\n' | ' ' |
              propertyImplementation |
              methodDeclaration |
+             methodImplementation |
              protocolDeclaration | forwardDeclaration | string | objcString | codeBlock |
              anyPreprocessor | AnyChar())
 

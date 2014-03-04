@@ -101,3 +101,6 @@ class StyleCheckerTest(unittest.TestCase):
           lineNumber += 1
 
       self.assertSameErrors(expected, errors)
+
+if __name__ == '__main__':
+    unittest.main()

@@ -46,7 +46,7 @@ def justErrors(value):
 
 
 def stringsAndErrors(value):
-  """Aggregate both unparsed strings and errors."""
+  """Aggregate both unpalsed strings and errors."""
   if not value:
     return None
 

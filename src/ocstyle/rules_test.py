@@ -48,6 +48,7 @@ class RulesTest(unittest.TestCase):
     self.assertMatches(rules.objcType, 'unsigned long long')
     self.assertMatches(rules.objcType, 'unsigned long long int')
     self.assertMatches(rules.objcType, 'void(^)()')
+    # self.assertMatches(rules.objcType, 'void(^BlockName)()')
     self.assertMatches(rules.objcType, 'const float(^)(id)')
     self.assertMatches(rules.objcType, 'NSArray *(^)(id, int)')
     self.assertMatches(rules.objcType, 'id<LETRenderCommandDelegate>')
@@ -55,6 +56,17 @@ class RulesTest(unittest.TestCase):
     self.assertMatches(rules.objcType, 'id<LETRenderCommandDelegate, NSURLConnectionDelegate>')
     self.assertMatches(rules.objcType, 'std::vector<LETRenderCommand *>::const_reverse_iterator')
     self.assertMatches(rules.objcType, 'std::vector<std::list<char>, 5>::const_reverse_iterator<potato>')
+
+
+  def testLocalBlockVariables(self):
+    self.assertMatches(rules.blockLocalVar, '''void(^)() = ^{int a = 5;};''')
+    self.assertMatches(rules.blockLocalVar, '''void(^BlockName)(int b) = ^(int b){int a = 5;};''')
+    self.assertMatches(rules.blockLocalVar, '''
+somePointer.blockVar = ^{int a = 5;};''')
+    self.assertMatches(rules.blockLocalVar, '''
+void (^onSuccessfullLogin)(int a, int b) = ^(int a, int b){
+        [this showWorkingController];
+    };''')
 
 
   def testSelectorPart(self):
@@ -97,7 +109,8 @@ class RulesTest(unittest.TestCase):
   def testInstanceVariable(self):
     """Test for an instance variable."""
     self.assertMatches(rules.ivar, 'long long _expectedLength;')
-    self.assertMatches(rules.ivar, 'void (^_onContentPresented)(CUTableViewItem *);')
+    self.assertMatches(rules.ivar, '''
+    void (^_onContentPresented)(CUTableViewItem *);''')
     self.assertMatches(rules.ivar, 'NSMutableSet *_active[__CCRequestPriorityImmediately + 1];')
     self.assertMatches(rules.ivar, 'unsigned long long int _expectedLength;')
 
@@ -110,9 +123,8 @@ class RulesTest(unittest.TestCase):
 
   def testMethod(self):
     """Test for method."""
-    self.assertMatches(rules.method, '''
-+ (NSString *)serverAddressWithSubdomain:(NSString *)subdomain;
-{
+    self.assertMatches(rules.methodImplementation, '''
++ (NSString *)serverAddressWithSubdomain:(NSString *)subdomain {
     return FORMAT(@"%@://%@", [self serverProtocol], [self serverHostWithSubdomain:subdomain]);
 }
     '''.strip())

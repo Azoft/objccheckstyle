@@ -34,8 +34,7 @@
     double _y;
 }
 
-+ (NSString *)_serverAddressWithSubdomain:(NSString *)subdomain;
-{
++ (NSString *)_serverAddressWithSubdomain:(NSString *)subdomain; {
     // Private selectors ok in implementation files.
     goto SomeLabel;
 }
@@ -48,27 +47,46 @@
 
 
  // EXPECT+1: MissingSemicolon, MissingNewline
-+ (void)badFormat:(NSString *)subdomain{
++ (void)badFormat:(NSString *)subdomain1{
 }
 
-+ (void)badFormat:(NSString *)subdomain;
++ (void)badFormat:(NSString *)subdomain2;
  { // EXPECT: ExtraSpace
 }
 
 
++ (void)testForBlock {
+    [UIView transitionWithView:self.window
+                      duration:0.5
+                       options:(animation | UIViewAnimationOptionAllowAnimatedContent)
+                    animations:^{
+                        UINavigationController *nc = (UINavigationController*)self.window.rootViewController;
+                        if ([nc isKindOfClass:[UINavigationController class]]) {
+                            [nc popToRootViewControllerAnimated:NO];
+                        }
+                        self.window.rootViewController = vc;
+                    } completion:nil];
+
+    void (^onSuccessfullLogin)(int a, int b) = ^(int a, int b){
+        [this showWorkingController];
+    };
+    somePointer.blockVar = ^{int a = 5;};
+
+    blockVar = ^{int a = 5;};
+}
+
 // EXPECT+1: ExtraSpace
-+ (void)badFormat:(NSString *)subdomain ;
-{
++ (void)badFormat:(NSString *)subdomain3  ;  {
 }
 
 
 // EXPECT+1: MissingSemicolon, MissingNewline
-+ (void)badFormat:(NSString *)subdomain {
++ (void)badFormat:(NSString *)subdomain4 {
 }
 
 
 // EXPECT+1: MissingNewline
-+ (void)badFormat:(NSString *)subdomain; {
++ (void)badFormat:(NSString *)subdomain5; {
 }
 
 
