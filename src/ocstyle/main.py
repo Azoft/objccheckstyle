@@ -53,7 +53,7 @@ def main():
   """Main body of the script."""
 
   parser = argparse.ArgumentParser()
-  parser.add_argument("--maxLineLength", action="store", type=int, default=120, help="Maximum line length")
+  # parser.add_argument("--maxLineLength", action="store", type=int, default=120, help="Maximum line length")
   args, filenames = parser.parse_known_args()
 
   for filename in filenames:
