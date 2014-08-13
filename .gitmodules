@@ -1,3 +1,0 @@
-[submodule "lib/lxml"]
-	path = lib/lxml
-	url = git://github.com/lxml/lxml.git

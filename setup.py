@@ -21,17 +21,18 @@ except ImportError:
   from distutils.core import setup
 
 
-setup(name='ocstyle',
-      version='0.1.1',
-      description='Objective-C style checker',
-      author='Cue Technologies, Inc.',
-      url='https://www.github.com/Cue/ocstyle',
+setup(name='obcjcheckstyle',
+      version='0.2',
+      description='Objective-C style checker with jenkins checkstyle format support',
+      author='zulkis',
+      url='https://github.com/zulkis/ocstyle',
       package_dir={'': 'src'},
-      packages=['ocstyle'],
+      packages=['obcjcheckstyle'],
       test_suite='nose.collector',
       include_package_data=True,
       install_requires=[
-        'parcon==0.1.25'
+        'parcon==0.1.25',
+        'lxml==3.3'
       ],
       entry_points={
         'console_scripts': [

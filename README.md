@@ -1,12 +1,13 @@
-ocstyle
+obcjcheckstyle
 =======
 
-Objective-C style checker
+Objective-C style checker with jenkins checkstyle format support
+Extension of ocstyle from https://github.com/cue/ocstyle
 
 # Installation
 
 ```
-pip install ocstyle+https://github.com/zulkis/ocstyle
+pip install obcjcheckstyle
 ```
 
 # Example
@@ -47,7 +48,7 @@ This way we ensure everyone maintains a consistent coding style with a minimum o
 
 # Related
 
-[OCLint](http://oclint.org/) runs static analysis that helps to detect common logic errors. Use it alongside ocstyle!
+[OCLint](http://oclint.org/) runs static analysis that helps to detect common logic errors. Use it alongside obcjcheckstyle!
 
 # Status
 
@@ -98,3 +99,4 @@ Apache License version 2.0
 # Authors
 
 [Cue](http://www.cueup.com)
+[Azoft](http:/www.azoft.com)
