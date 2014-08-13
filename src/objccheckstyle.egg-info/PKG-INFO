@@ -1,8 +1,8 @@
 Metadata-Version: 1.0
-Name: obcjcheckstyle
+Name: objccheckstyle
 Version: 0.2
 Summary: Objective-C style checker with jenkins checkstyle format support
-Home-page: https://github.com/zulkis/ocstyle
+Home-page: https://github.com/zulkis/objccheckstyle
 Author: zulkis
 Author-email: UNKNOWN
 License: UNKNOWN

@@ -1,3 +1,0 @@
-[console_scripts]
-obcjcheckstyle = obcjcheckstyle.main:main
-

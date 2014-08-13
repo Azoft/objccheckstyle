@@ -21,13 +21,13 @@ except ImportError:
   from distutils.core import setup
 
 
-setup(name='obcjcheckstyle',
+setup(name='objccheckstyle',
       version='0.2',
       description='Objective-C style checker with jenkins checkstyle format support',
       author='zulkis',
-      url='https://github.com/zulkis/obcjcheckstyle',
+      url='https://github.com/zulkis/objccheckstyle',
       package_dir={'': 'src'},
-      packages=['obcjcheckstyle'],
+      packages=['objccheckstyle'],
       test_suite='nose.collector',
       include_package_data=True,
       install_requires=[
@@ -36,7 +36,7 @@ setup(name='obcjcheckstyle',
       ],
       entry_points={
         'console_scripts': [
-          'obcjcheckstyle = obcjcheckstyle.main:main'
+          'objccheckstyle = objccheckstyle.main:main'
         ]
       },
 )
