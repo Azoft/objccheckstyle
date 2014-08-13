@@ -36,7 +36,7 @@ setup(name='obcjcheckstyle',
       ],
       entry_points={
         'console_scripts': [
-          'ocstyle = ocstyle.main:main'
+          'obcjcheckstyle = obcjcheckstyle.main:main'
         ]
       },
 )
