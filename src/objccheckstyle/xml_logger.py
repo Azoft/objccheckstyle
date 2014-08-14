@@ -36,7 +36,7 @@ class XmlLogger(object):
             return
 
     def persistToDisk(self):
-        filePath = self.xmlLogFolder + "/" + "checkstyle_report.xml";
+        filePath = self.xmlLogFolder + "/" + "checkstyle-result.xml";
         file = open(filePath, "w")
         file.write(etree.tostring(self.root, pretty_print=True));
         file.close()
