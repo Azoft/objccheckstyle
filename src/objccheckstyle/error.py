@@ -16,8 +16,6 @@
 
 import bisect
 
-
-
 class Error(object):
   """An error."""
 
@@ -36,9 +34,16 @@ class Error(object):
     line = bisect.bisect_left(self.lines, self.position)
     return line, self.position - self.lines[line - 1]
 
+  def line(self):
+    return bisect.bisect_left(self.lines, self.position)
+
+  def offset(self):
+    line = bisect.bisect_left(self.lines, self.position)
+    return self.position - self.lines[line - 1]
+
   def __str__(self):
     line, offset = self.lineAndOffset()
-    return ':%d:%d: warning: OCStyle: %s - %s' % (line, offset, self.kind, self.message)
+    return ':%d:%d: warning: objccheckstyle: %s - %s' % (line, offset, self.kind, self.message)
 
 
   def __repr__(self):

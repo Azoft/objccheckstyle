@@ -18,7 +18,7 @@ from parcon import flatten
 
 import StringIO
 
-from ocstyle.error import Error
+from error import Error
 
 
 def drop(*_):

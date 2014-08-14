@@ -22,9 +22,9 @@ import csv
 import StringIO
 
 import parcon
+import rules
 
-from ocstyle import rules
-
+from xml_logger import  XmlLogger
 
 def check(path, maxLineLength):
   """Style checks the given path."""
@@ -45,9 +45,11 @@ def checkFile(path, f, maxLineLength):
 
 def parseFilename(filename, maxLineLength) :
   if filename.endswith(('.m','.mm','.h')):
+    xmlLogger.startFile(filename)
     for part in check(filename, maxLineLength):
         if isinstance(part,rules.Error):
-          sys.stderr.write(os.path.abspath(filename) + '%s\n' % part)
+          """sys.stderr.write(os.path.abspath(filename) + '%s\n' % part)"""
+          xmlLogger.addError(part);
         else:
           print 'unparsed: %r\n' % part
 
@@ -74,8 +76,11 @@ def main():
   parser = argparse.ArgumentParser()
   parser.add_argument("--maxLineLength", action="store", type=int, default=120, help="Maximum line length")
   parser.add_argument("--excludedDirs", action="store", type=str)
+  parser.add_argument("--xmlLogFolderPath", action="store", type=str)
   args, filenames = parser.parse_known_args()
 
+  global xmlLogger
+  xmlLogger = XmlLogger(StringIO.StringIO(args.xmlLogFolderPath).read())
   for filename in filenames:
     if not os.path.isdir(filename):
       parseFilename(filename, args.maxLineLength)
@@ -98,7 +103,7 @@ def main():
 
 
     print
-
+  xmlLogger.persistToDisk();
 
 if __name__ == '__main__':
   main()

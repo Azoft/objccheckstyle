@@ -22,8 +22,8 @@ from parcon import failure, match
 import inspect
 import re
 
-from ocstyle.error import Error
-from ocstyle.handlers import drop, justErrors, stringsAndErrors
+from error import Error
+from handlers import drop, justErrors, stringsAndErrors
 
 
 VERBOSE = True
