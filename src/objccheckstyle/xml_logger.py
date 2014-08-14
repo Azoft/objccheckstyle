@@ -17,10 +17,10 @@ import error
 
 class XmlLogger(object):
 
-    def __init__(self, xmlLogFolder, checkstyleResultFilename, checkstyleVersion):
+    def __init__(self, xmlLogFolder, checkstyleResultFilename):
         self.xmlLogFolder = xmlLogFolder
         self.checkstyleResultFilename = checkstyleResultFilename
-        self.root = etree.Element("checkstyle", {"version":checkstyleVersion})
+        self.root = etree.Element("checkstyle")
 
     def startFile(self, fileName):
         self.currentFile = etree.Element("file", {"name":fileName})
