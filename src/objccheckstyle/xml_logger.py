@@ -17,10 +17,10 @@ import error
 
 class XmlLogger(object):
 
-    def __init__(self, xmlLogFolder, checkstyleResultFilename):
+    def __init__(self, xmlLogFolder, checkstyleResultFilename, checkstyleVersion):
         self.xmlLogFolder = xmlLogFolder
         self.checkstyleResultFilename = checkstyleResultFilename
-        self.root = etree.Element("checkstyle")
+        self.root = etree.Element("checkstyle", {"version":checkstyleVersion})
 
     def startFile(self, fileName):
         self.currentFile = etree.Element("file", {"name":fileName})
@@ -32,7 +32,9 @@ class XmlLogger(object):
             offset = err.offset()
             errorElement = etree.Element("error", {"line":str(line),
                                                    "column":str(offset),
-                                                   "message":('%s - %s' % (err.kind, err.message))})
+                                                   "message":('%s - %s' % (err.kind, err.message)),
+                                                   "source":"objccheckstyle",
+                                                   "severity":"error"})
             self.currentFile.append(errorElement)
             return
 
