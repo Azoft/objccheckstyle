@@ -2,6 +2,7 @@ objccheckstyle
 =======
 
 Objective-C style checker with jenkins checkstyle format support
+
 Extension of ocstyle from https://github.com/cue/ocstyle
 
 # Installation
@@ -9,6 +10,14 @@ Extension of ocstyle from https://github.com/cue/ocstyle
 ```
 pip install objccheckstyle
 ```
+
+# Arguments
+
+--xmlLogFolderPath - Required path to provide. By default you need to provide path to root folder of project to be searched by Checkstyle Jenkins plugin
+
+--maxLineLength - Optional. By default = 120
+--excludedDirs - Optional. By default = None. For example 3d party libs dirs. csv
+--checkstyleResultFilename - Optional. By default = "checkstyle-result.xml"
 
 # Example
 
