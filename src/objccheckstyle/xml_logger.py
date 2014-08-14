@@ -39,5 +39,5 @@ class XmlLogger(object):
     def persistToDisk(self):
         filePath = self.xmlLogFolder + "/" + self.checkstyleResultFilename
         file = open(filePath, "w")
-        file.write(etree.tostring(self.root, pretty_print=True));
+        file.write(etree.tostring(self.root, pretty_print=True, xml_declaration=True, encoding='utf-8'));
         file.close()
