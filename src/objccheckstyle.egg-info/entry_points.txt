@@ -1,3 +1,0 @@
-[console_scripts]
-objccheckstyle = objccheckstyle.main:main
-
