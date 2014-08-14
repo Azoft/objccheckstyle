@@ -17,8 +17,9 @@ import error
 
 class XmlLogger(object):
 
-    def __init__(self, xmlLogFolder):
-        self.xmlLogFolder = xmlLogFolder;
+    def __init__(self, xmlLogFolder, checkstyleResultFilename):
+        self.xmlLogFolder = xmlLogFolder
+        self.checkstyleResultFilename = checkstyleResultFilename
         self.root = etree.Element("checkstyle")
 
     def startFile(self, fileName):
@@ -36,7 +37,7 @@ class XmlLogger(object):
             return
 
     def persistToDisk(self):
-        filePath = self.xmlLogFolder + "/" + "checkstyle-result.xml";
+        filePath = self.xmlLogFolder + "/" + self.checkstyleResultFilename
         file = open(filePath, "w")
         file.write(etree.tostring(self.root, pretty_print=True));
         file.close()

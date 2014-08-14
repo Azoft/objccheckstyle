@@ -77,10 +77,11 @@ def main():
   parser.add_argument("--maxLineLength", action="store", type=int, default=120, help="Maximum line length")
   parser.add_argument("--excludedDirs", action="store", type=str)
   parser.add_argument("--xmlLogFolderPath", action="store", type=str)
+  parser.add_argument("--checkstyleResultFilename", action="store", type=str, default="checkstyle-result.xml")
   args, filenames = parser.parse_known_args()
 
   global xmlLogger
-  xmlLogger = XmlLogger(StringIO.StringIO(args.xmlLogFolderPath).read())
+  xmlLogger = XmlLogger(StringIO.StringIO(args.xmlLogFolderPath).read(), StringIO.StringIO(args.checkstyleResultFilename).read())
   for filename in filenames:
     if not os.path.isdir(filename):
       parseFilename(filename, args.maxLineLength)
