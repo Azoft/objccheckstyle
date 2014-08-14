@@ -13,11 +13,13 @@ pip install objccheckstyle
 
 # Arguments
 
---xmlLogFolderPath - Required path to provide. By default you need to provide path to root folder of project to be searched by Checkstyle Jenkins plugin
+`--xmlLogFolderPath` - Required path to provide. By default you need to provide path to root folder of project to be searched by Checkstyle Jenkins plugin
 
---maxLineLength - Optional. By default = 120
---excludedDirs - Optional. By default = None. For example 3d party libs dirs. csv
---checkstyleResultFilename - Optional. By default = "checkstyle-result.xml"
+`--maxLineLength` - Optional. By default = 120
+
+`--excludedDirs` - Optional. By default = None. For example 3d party libs dirs. csv
+
+`--checkstyleResultFilename` - Optional. By default = "checkstyle-result.xml"
 
 # Example
 
