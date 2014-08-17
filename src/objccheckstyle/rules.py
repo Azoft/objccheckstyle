@@ -444,7 +444,7 @@ def propertyOptions(value):
 
 def expectedDoc(kind, message):
   """Expected documentation."""
-  return expected(kind, message, docComment + xsp + '\n' + xsp)
+  return '' """expected(kind, message, docComment + xsp + '\n' + xsp)"""
 
 
 @rule(expectedDoc('ExpectedPropertyDocInHeader', 'Property requires /** documentation */') +
