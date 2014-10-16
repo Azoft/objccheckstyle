@@ -1,9 +1,11 @@
 //
-//  Parsing.m
-//  ocstyle
+//  Parsing.h
+//  objccheckstyle
 //
 //  Created by Robby Walker on 9/30/12.
-//  Copyright (c) 2012 The ocstyle Authors.
+//  Modified by Alexey Minaev on 06/06/14
+//  Copyright (c) 2013 The ocstyle Authors.
+//  Copyright (c) 2014 The objccheckstyle Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,26 +36,18 @@
     double _y;
 }
 
-+ (NSString *)_serverAddressWithSubdomain:(NSString *)subdomain; {
++ (NSString *)_serverAddressWithSubdomain:(NSString *)subdomain {
     // Private selectors ok in implementation files.
     goto SomeLabel;
 }
 
 
-+ (NSString *)serverAddressWithSubdomain:(NSString *)subdomain;
-{
++ (NSString *)serverAddressWithSubdomain:(NSString *)subdomain {
     return FORMAT(@"%@://%@", [self serverProtocol], [self serverHostWithSubdomain:subdomain]);
 }
 
-
- // EXPECT+1: MissingSemicolon, MissingNewline
-+ (void)badFormat:(NSString *)subdomain1{
++ (void)badFormat:(NSString *)subdomain2  { // EXPECT: ExtraSpace
 }
-
-+ (void)badFormat:(NSString *)subdomain2;
- { // EXPECT: ExtraSpace
-}
-
 
 + (void)testForBlock {
     [UIView transitionWithView:self.window
@@ -70,23 +64,23 @@
     void (^onSuccessfullLogin)(int a, int b) = ^(int a, int b){
         [this showWorkingController];
     };
-    somePointer.blockVar = ^{int a = 5;};
+    somePointer.blockVar = ^ {int a = 5;}; // Expect -1 Extra space
 
     blockVar = ^{int a = 5;};
 }
 
-// EXPECT+1: ExtraSpace
-+ (void)badFormat:(NSString *)subdomain3  ;  {
+// EXPECT-1: ExtraSpace Got 2
++ (void)badFormat:(NSString *)subdomain3  {
 }
 
 
-// EXPECT+1: MissingSemicolon, MissingNewline
-+ (void)badFormat:(NSString *)subdomain4 {
+// EXPECT+1: ExtraSpace got 0
++ (void)badFormat:(NSString*)subdomain4 {
 }
 
 
 // EXPECT+1: MissingNewline
-+ (void)badFormat:(NSString *)subdomain5; {
++ (void)badFormat:(NSString *)subdomain5 {
 }
 
 
@@ -98,7 +92,7 @@
 }
 
 
-+ (void)someMessage:(NSString *)subdomain;
++ (void)someMessage:(NSString *)subdomain
 {
     int ok;
     NSString *BadName; // EXPECT: BadLocalVariableName
@@ -126,7 +120,7 @@
 }
 
 
-- (NSURL *)mapsUrl;
+- (NSURL *)mapsUrl
 {
     std::vector<NativeResponse *> reverse;
     std::vector<NativeResponse *>reverse; // EXPECT: MissingSpace

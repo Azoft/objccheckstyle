@@ -1,9 +1,12 @@
 //
 //  Parsing.h
 //  ocstyle
+//  objccheckstyle
 //
 //  Created by Robby Walker on 9/30/12.
+//  Modified by Alexey Minaev on 06/06/14
 //  Copyright (c) 2013 The ocstyle Authors.
+//  Copyright (c) 2014 The objccheckstyle Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,12 +51,12 @@
 
 -(void)set; // EXPECT: MissingSpace
 
-@property BOOL shouldForceFrame; // EXPECT: ExpectedPropertyDocInHeader
+@property BOOL shouldForceFrame;
 
-@property (readonly) SCNavigationBar*fakeBackground; // EXPECT: MissingSpace, ExpectedPropertyDocInHeader
-@property (readonly)SCNavigationBar *fakeBackground; // EXPECT: MissingSpace, ExpectedPropertyDocInHeader
-@property(readonly) SCNavigationBar *fakeBackground; // EXPECT: MissingSpace, ExpectedPropertyDocInHeader
-@property (readonly) SCNavigationBar *fakeBackground ; // EXPECT: ExtraSpace, ExpectedPropertyDocInHeader
+@property (readonly) SCNavigationBar*fakeBackground; // EXPECT: MissingSpace
+@property (readonly)SCNavigationBar *fakeBackground; // EXPECT: MissingSpace
+@property(readonly) SCNavigationBar *fakeBackground; // EXPECT: MissingSpace
+@property (readonly) SCNavigationBar *fakeBackground ; // EXPECT: ExtraSpace
 
 // This line is just the right size.....................................................................................
 // EXPECT+1:LineTooLong
@@ -64,9 +67,9 @@
  */
 @property (readonly) SCNavigationBar * fakeBackground; // EXPECT: ExtraSpace
 
-@property (nonatomic, getter= isEnabled) BOOL enabled; // EXPECT: MissingSpace, ExpectedPropertyDocInHeader
-@property (nonatomic, getter =isEnabled) BOOL enabled; // EXPECT: MissingSpace, ExpectedPropertyDocInHeader
-@property (nonatomic, getter = isEnabled) BOOL enabled; // EXPECT: ExpectedPropertyDocInHeader
+@property (nonatomic, getter= isEnabled) BOOL enabled; // EXPECT: MissingSpace
+@property (nonatomic, getter =isEnabled) BOOL enabled; // EXPECT: MissingSpace
+@property (nonatomic, getter = isEnabled) BOOL enabled;
 
 /**
 * If we want "sometimes" handling of an url
@@ -79,7 +82,7 @@ CCBlockProperty(BlockURLHandler, withCheckBlock, (URLHandlingBlock));
 // EXPECT+1: ExpectedProtocolDocInHeader
 @protocol PersistentCacheable
 
-@property (nonatomic, retain)   NSDate *modifiedDate; // EXPECT: ExtraSpace, ExpectedPropertyDocInHeader
+@property (nonatomic, retain)   NSDate *modifiedDate; // EXPECT: ExtraSpace
 
 @optional
 
